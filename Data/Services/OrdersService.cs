@@ -31,13 +31,13 @@ namespace eTickets.Data.Services
 
         public async Task StoreOrderAsync(List<ShoppingCartItem> items, string userId, string userEmailAddress)
         {
-            var orders = new Order()
+            var order = new Order()
             {
                 UserId = userId,
                 Email = userEmailAddress
             };
+            await _context.Orders.AddAsync(order);
 
-            await _context.Orders.AddAsync(orders);
             await _context.SaveChangesAsync();
 
             foreach (var item in items)
@@ -46,7 +46,7 @@ namespace eTickets.Data.Services
                 {
                     Amount = item.Amount,
                     MovieId = item.Movie.Id,
-                    OrderId = orders.Id,
+                    OrderId = order.Id,
                     Price = item.Movie.Price
                 };
                 await _context.OrderItems.AddAsync(orderItem);

@@ -1,5 +1,5 @@
 ﻿using eTickets.Data;
-using eTickets.Data.Statics;
+using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
 using eTickets.Models;
 using Microsoft.AspNetCore.Identity;
@@ -54,9 +54,12 @@ namespace eTickets.Controllers
                         return RedirectToAction("Index", "Movies");
                     }
                 }
+                TempData["Error"] = "Wrong credentials. Please, try again!";
+                return View(loginVM);
+
             }
 
-            TempData["Error"] = "Wrong credentials. Pleas, try again!";
+            TempData["Error"] = "Wrong credentials. Please, try again!";
             return View(loginVM);
         }
 
@@ -84,11 +87,10 @@ namespace eTickets.Controllers
                 Email = registerVM.EmailAddress,
                 UserName = registerVM.EmailAddress
             };
-            var newUresResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerVM.Password);
 
-            if (newUresResponse.Succeeded)
+            if (newUserResponse.Succeeded)
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-
 
             return View("RegisterCompleted");
         }
@@ -99,5 +101,11 @@ namespace eTickets.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Movies");
         }
+
+        public IActionResult AccessDenied(string ReturnUrl)
+        {
+            return View();
+        }
+
     }
 }

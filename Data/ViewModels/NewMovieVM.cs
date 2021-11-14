@@ -13,7 +13,7 @@ namespace eTickets.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Movie Name")]
+        [Display(Name = "Movie name")]
         [Required(ErrorMessage = "Name is required")]        
         public string Name { get; set; }
 
@@ -21,12 +21,12 @@ namespace eTickets.Models
         [Required(ErrorMessage = "Description is required")]        
         public string Description { get; set; }
 
-        [Display(Name = "Price is $")]
+        [Display(Name = "Price in $")]
         [Required(ErrorMessage = "Price is required")]       
         public double Price { get; set; }
 
-        [Display(Name = "Movie poste URL")]
-        [Required(ErrorMessage = "Movie poste URL is required")]        
+        [Display(Name = "Movie poster URL")]
+        [Required(ErrorMessage = "Movie poster URL is required")]        
         public string ImageURL { get; set; }
 
         [Display(Name = "Movie start date")]
@@ -37,10 +37,11 @@ namespace eTickets.Models
         [Required(ErrorMessage = "End date is required")]        
         public DateTime EndDate { get; set; }
 
-        [Display(Name = "Select category")]
+        [Display(Name = "Select a category")]
         [Required(ErrorMessage = "Movie category is required")]        
         public MovieCategory MovieCategory { get; set; }
 
+        //Relationships
         [Display(Name = "Select actor(s)")]
         [Required(ErrorMessage = "Movie actor(s) is required")]        
         public List<int> ActorIds { get; set; }

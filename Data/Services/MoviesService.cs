@@ -34,7 +34,7 @@ namespace eTickets.Data.Services
             await _context.Movies.AddAsync(newMovie);
             await _context.SaveChangesAsync();
 
-            // Add Movie Actor
+            // Add Movie Actors
             foreach (var actorId in data.ActorIds)
             {
                 var newActorMovie = new Actor_Movie()
@@ -59,7 +59,7 @@ namespace eTickets.Data.Services
             return movieDetails;
         }
 
-        public async Task<NewMovieDropdownsVM> GetNewMovieDropdownsVM()
+        public async Task<NewMovieDropdownsVM> GetNewMovieDropdownsValues()
         {
             var response = new NewMovieDropdownsVM()
             {
@@ -94,7 +94,7 @@ namespace eTickets.Data.Services
             _context.Actors_Movies.RemoveRange(existingActorsDb);
             await _context.SaveChangesAsync();
 
-            // Add Movie Actor
+            // Add Movie Actors
             foreach (var actorId in data.ActorIds)
             {
                 var newActorMovie = new Actor_Movie()

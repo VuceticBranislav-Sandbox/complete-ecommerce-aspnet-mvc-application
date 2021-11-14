@@ -1,6 +1,8 @@
 ﻿using eTickets.Data.Cart;
 using eTickets.Data.Services;
+using eTickets.Data.Static;
 using eTickets.Data.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,16 +12,16 @@ using System.Threading.Tasks;
 
 namespace eTickets.Controllers
 {
+    [Authorize]
     public class OrdersController : Controller
     {
-
-        private readonly IMoviesService _moviesServices;
+        private readonly IMoviesService _moviesService;
         private readonly ShoppingCart _shoppingCart;
         private readonly IOrdersService _ordersService;
 
-        public OrdersController(IMoviesService moviesServices, ShoppingCart shoppingCart, IOrdersService ordersService)
+        public OrdersController(IMoviesService moviesService, ShoppingCart shoppingCart, IOrdersService ordersService)
         {
-            _moviesServices = moviesServices;
+            _moviesService = moviesService;
             _shoppingCart = shoppingCart;
             _ordersService = ordersService;
         }
@@ -48,7 +50,7 @@ namespace eTickets.Controllers
 
         public async Task<IActionResult> AddItemToShoppingCart(int id)
         {
-            var item = await _moviesServices.GetByIdAsync(id);
+            var item = await _moviesService.GetMovieByIdAsync(id);
 
             if(item != null)
             {
@@ -59,7 +61,7 @@ namespace eTickets.Controllers
 
         public async Task<IActionResult> RemoveItemFromShoppingCart(int id)
         {
-            var item = await _moviesServices.GetByIdAsync(id);
+            var item = await _moviesService.GetMovieByIdAsync(id);
 
             if (item != null)
             {
@@ -75,7 +77,7 @@ namespace eTickets.Controllers
             string userEmailAddress = User.FindFirstValue(ClaimTypes.Email);
 
             await _ordersService.StoreOrderAsync(items, userId, userEmailAddress);
-            await _shoppingCart.ClearShopingCartAsync();
+            await _shoppingCart.ClearShoppingCartAsync();
 
             return View("OrderCompleted");
         }

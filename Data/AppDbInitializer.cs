@@ -1,4 +1,4 @@
-﻿using eTickets.Data.Statics;
+﻿using eTickets.Data.Static;
 using eTickets.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -321,12 +321,12 @@ namespace eTickets.Data
 
         }
 
-        public static async Task SeedUsersAndRoles(IApplicationBuilder applicationBuilder)
+        public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
         {
-            using (var serviceCsope = applicationBuilder.ApplicationServices.CreateScope())
+            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
                 // Roles
-                var roleManager = serviceCsope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
@@ -334,10 +334,10 @@ namespace eTickets.Data
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
                 // Users
-                var userManager = serviceCsope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
                 string adminUserEmail = "admin@etickets.com";
 
-                var adminUser = await userManager.FindByIdAsync(adminUserEmail);
+                var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
                 if (adminUser == null)
                 {
                     var newAdminUser = new ApplicationUser()
@@ -353,7 +353,7 @@ namespace eTickets.Data
 
                 string appUserEmail = "user@etickets.com";
 
-                var appUser = await userManager.FindByIdAsync(appUserEmail);
+                var appUser = await userManager.FindByEmailAsync(appUserEmail);
                 if (appUser == null)
                 {
                     var newAppUser = new ApplicationUser()

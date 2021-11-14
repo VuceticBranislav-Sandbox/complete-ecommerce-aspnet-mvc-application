@@ -85,12 +85,12 @@ namespace eTickets
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Movies}/{action=Index}/{id?}");
             });
 
             // Seed database
             AppDbInitializer.Seed(app);
-            AppDbInitializer.SeedUsersAndRoles(app).Wait();
+            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
         }
     }
 }
